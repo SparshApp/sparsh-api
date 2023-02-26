@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: python3 app.py
+    ports:
+      - "8000:8000"
+    environment:
+      - FLASK_ENV=production
+    depends_on:
+      - db
+    restart: always
+    volumes:
+      - ./app:/app
+
+  db:
+    image: postgres:12
+    restart: always
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=mydb
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  integration_tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.integration_tests
+    command: pytest
+    depends_on:
+      - db
+      - web
+    volumes:
+      - ./app:/app
+      - ./tests:/tests
