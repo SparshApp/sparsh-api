@@ -5,7 +5,7 @@ FROM python:3.9
 WORKDIR /app
 
 # Copy the requirements file into the container
-COPY . /app/src
+COPY . /app
 
 # Install the required packages
 RUN pip3 install --no-cache-dir -r requirements.txt
@@ -14,4 +14,4 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 EXPOSE 5001
 
 # Run app.py when the container launches
-CMD ["python3", "src/app.py"]
+CMD ["python3", "app.py"]

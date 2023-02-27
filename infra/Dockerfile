@@ -1,16 +1,25 @@
-# Use the official Terraform image as the base image
-FROM hashicorp/terraform:latest
+FROM ubuntu:latest
 
-# Set the working directory to the app's Terraform directory
+# Update package list and install dependencies
+RUN apt-get update && \
+    apt-get install -y wget unzip && \
+    wget https://releases.hashicorp.com/terraform/1.0.10/terraform_1.0.10_linux_amd64.zip && \
+    unzip terraform_1.0.10_linux_amd64.zip && \
+    mv terraform /usr/local/bin && \
+    rm terraform_1.0.10_linux_amd64.zip && \
+    apt-get remove -y wget unzip && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set the working directory
 WORKDIR /app/infra
 
-# Copy the app's Terraform code into the container
-COPY . /app/infra
+# Copy the Terraform code to the container
+COPY . .
 
-# Install any additional packages or dependencies needed for the Terraform code
-RUN apt-get update && apt-get install -y \
-    unzip \
-    && rm -rf /var/lib/apt/lists/*
+# Call terraform init
+RUN terraform init
 
-# Set the entrypoint to the Terraform binary
-ENTRYPOINT ["terraform"]
+# Call terraform apply
+CMD ["terraform", "apply", "-auto-approve"]
