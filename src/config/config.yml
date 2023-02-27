@@ -1,0 +1,53 @@
+# Global config
+global:
+  app_name: my_app
+  debug: true
+  testing: false
+
+# Dev config
+dev:
+  <<: *global
+  env: dev
+  database:
+    db_name: my_app_dev
+    db_user: my_user
+    db_password: my_password
+    db_host: localhost
+    db_port: 3306
+  api_key: my_api_key_dev
+  aws:
+    access_key: abcdefg123456
+    secret_key: 78910hijklmn
+    region: us-west-2
+
+# QA config
+qa:
+  <<: *global
+  env: qa
+  database:
+    db_name: my_app_qa
+    db_user: my_user
+    db_password: my_password
+    db_host: localhost
+    db_port: 3306
+  api_key: my_api_key_qa
+  aws:
+    access_key: abcdefg123456
+    secret_key: 78910hijklmn
+    region: us-west-2
+
+# Prod config
+prod:
+  <<: *global
+  env: prod
+  database:
+    db_name: my_app_prod
+    db_user: my_user
+    db_password: my_password
+    db_host: localhost
+    db_port: 3306
+  api_key: my_api_key_prod
+  aws:
+    access_key: abcdefg123456
+    secret_key: 78910hijklmn
+    region: us-west-2

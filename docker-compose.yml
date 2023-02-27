@@ -2,7 +2,9 @@ version: '3'
 
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.src
     command: python3 app.py
     ports:
       - "8000:8000"
@@ -16,6 +18,9 @@ services:
 
   db:
     image: postgres:12
+    build:
+      context: .
+      dockerfile: Dockerfile.db
     restart: always
     environment:
       - POSTGRES_USER=myuser
@@ -27,7 +32,7 @@ services:
   integration_tests:
     build:
       context: .
-      dockerfile: Dockerfile.integration_tests
+      dockerfile: Dockerfile.src.tests.integration
     command: pytest
     depends_on:
       - db
@@ -35,3 +40,12 @@ services:
     volumes:
       - ./app:/app
       - ./tests:/tests
+
+  terraform:
+    image: my-app:latest
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      ENV: ${ENV}
+    command: ["terraform", "apply", "-auto-approve"]

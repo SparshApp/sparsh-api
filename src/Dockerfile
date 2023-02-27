@@ -2,10 +2,10 @@
 FROM python:3.9
 
 # Set the working directory to /app
-WORKDIR /
+WORKDIR /app
 
 # Copy the requirements file into the container
-COPY . /
+COPY . /app/src
 
 # Install the required packages
 RUN pip3 install --no-cache-dir -r requirements.txt
