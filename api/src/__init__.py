@@ -13,7 +13,7 @@ def create_app():
     app = Flask(__name__)
     CORS(app)
 
-    from routes import app_instance
+    from routes.routes import app_instance
     app.register_blueprint(app_instance)
 
     create_db(app)

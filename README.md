@@ -1,11 +1,7 @@
-# sparsh-api
+# Setup
 
-## Mac, Linux
+1. `git clone git@github.com:SparshApp/sparsh-api.git`
 
-1. _(One-time setup)_ `git clone git@github.com:SparshApp/sparsh-api.git`
+1. `python3 -m venv venv`
 
-2. `cd sparsh-api/src`
-
-3. docker build .
-
-4. docker run sparsh-api
+1. `source venv/bin/activate`

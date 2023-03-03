@@ -1,12 +1,13 @@
-.env
-client_secret.json
+*.env*
+*client_secret.json
 
-.DS_Store
-.idea
-.vscode
-venv
+*.DS_Store
+*.idea
+*.vscode
 
-src/__pycache__
-src/api/__pycache__
+*.coverage
 
-terraform.tfstate
+*venv*
+*__pycache__*
+
+*terraform.tfstate

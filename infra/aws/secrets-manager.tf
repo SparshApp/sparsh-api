@@ -1,0 +1,1 @@
+# Define a lambda function to rotate the secrets in AWS Secrets Manager
