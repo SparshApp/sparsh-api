@@ -13,7 +13,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
-WORKDIR /app/infra
+WORKDIR /infra
 
 # Copy the Terraform code to the container
 COPY . .
