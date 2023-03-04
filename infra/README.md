@@ -1,5 +1,7 @@
 # Infrastructure files
 
-`docker build . -t infrastructure`
+`export APP_ENV=dev|qa|prod`
 
-`docker run infrastructure`
+`docker build . -t api-infra`
+
+`docker run api-infra`

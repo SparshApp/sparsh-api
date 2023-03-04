@@ -13,7 +13,7 @@ services:
       - db
     restart: always
     # volumes:
-    #   - ./app:/app
+    #   - app:app
     networks:
       sparsh-network:
           aliases:
@@ -30,7 +30,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     # volumes:
-    #   - ./mysql-data:/var/lib/mysql
+    #   - mysql-data:/var/lib/mysql
     ports:
       - "3306:3306"
     networks:
@@ -93,6 +93,10 @@ services:
       sparsh-network:
           aliases:
               - api-infra
+
+volumes:
+  app:
+  mysql-data:
 
 networks:
   sparsh-network:

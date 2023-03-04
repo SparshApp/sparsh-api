@@ -1,8 +1,27 @@
 # Global config
-global:
+global: &global
   app_name: sparsh_api
   debug: true
+  testing: false
+
+# Test config
+test:
+  <<: *global
   testing: true
+  env: test
+  database:
+    db_name: my_app_test
+    db_user: my_user
+    db_password: my_password
+    db_host: localhost
+    db_port: 3306
+    db_uri: postgresql://user:password@localhost:5432/test_db
+  api_key: my_api_key_test
+  aws:
+    access_key: abcdefg123456
+    secret_key: test_secret_key
+    secret_name: test_secrets
+    region: us-west-2
 
 # Dev config
 dev:
@@ -14,10 +33,12 @@ dev:
     db_password: my_password
     db_host: localhost
     db_port: 3306
+    db_uri: postgresql://user:password@localhost:5432/dev_db
   api_key: my_api_key_dev
   aws:
     access_key: abcdefg123456
-    secret_key: 78910hijklmn
+    secret_key: dev_secret_key
+    secret_name: dev_secrets
     region: us-west-2
 
 # QA config
@@ -30,10 +51,12 @@ qa:
     db_password: my_password
     db_host: localhost
     db_port: 3306
+    db_uri: postgresql://user:password@localhost:5432/qa_db
   api_key: my_api_key_qa
   aws:
     access_key: abcdefg123456
-    secret_key: 78910hijklmn
+    secret_key: qa_secret_key
+    secret_name: qa_secrets
     region: us-west-2
 
 # Prod config
@@ -41,15 +64,17 @@ prod:
   app_name: sparsh_api
   env: prod
   debug: false
-  testing: true
+  testing: false
   database:
     db_name: my_app_prod
     db_user: my_user
     db_password: my_password
     db_host: localhost
     db_port: 3306
+    db_uri: postgresql://user:password@localhost:5432/prod_db
   api_key: my_api_key_prod
   aws:
     access_key: abcdefg123456
-    secret_key: 78910hijklmn
+    secret_key: prod_secret_key
+    secret_name: prod_secrets
     region: us-west-2

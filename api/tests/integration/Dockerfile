@@ -11,7 +11,7 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Set the environment variable for running tests
-ENV FLASK_ENV=test
+ENV APP_ENV=test
 
 # Set the command to run tests
 CMD ["python", "-m", "pytest", "--cov-report", "term-missing", "--cov", "app"]
