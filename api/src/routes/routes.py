@@ -1,12 +1,13 @@
 from flask import Blueprint
 
-app_instance = Blueprint(name="app_instance", import_name=__name__)
+app_bp = Blueprint(name="sparsh_api", import_name=__name__)
 
-@app_instance.route("/")
+
+@app_bp.route("/")
 def index():
     return "Hello World!"
 
 
-@app_instance.route("/login")
+@app_bp.route("/login")
 def login():
     return "Login!"

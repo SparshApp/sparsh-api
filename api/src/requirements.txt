@@ -1,7 +1,6 @@
-ariadne==0.18.1
 Flask>=2.2
-Flask_Cors==3.0.10
+flask_bcrypt==1.0.1
+flask_cors==3.0.10
+flask_login==0.6.2
 flask_sqlalchemy==3.0.3
-marshmallow==3.19.0
-PyYAML==6.0
-SQLAlchemy==1.4.39
+python-dotenv==1.0.0

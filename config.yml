@@ -1,8 +1,8 @@
 # Global config
 global:
-  app_name: my_app
+  app_name: sparsh_api
   debug: true
-  testing: false
+  testing: true
 
 # Dev config
 dev:
@@ -38,8 +38,10 @@ qa:
 
 # Prod config
 prod:
-  <<: *global
+  app_name: sparsh_api
   env: prod
+  debug: false
+  testing: true
   database:
     db_name: my_app_prod
     db_user: my_user
