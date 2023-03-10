@@ -1,6 +1,7 @@
 import os
 import yaml
 from .secrets import Secrets
+from db.schema import USERS_TABLE_SCHEMA
 
 env = os.getenv('APP_ENV', 'dev')
 secrets = Secrets()
@@ -21,26 +22,26 @@ class BaseConfig:
     AWS_ACCESS_KEY_ID = parse_config_yaml()['aws']['access_key_id']
     AWS_SECRET_ACCESS_KEY = secrets.get_secrets()['AWS_SECRET_ACCESS_KEY']
     AWS_REGION = parse_config_yaml()['aws']['region']
-    
-    # AWS_SECRET_NAME = parse_config_yaml()['aws']['secret_name']
-    # AWS_SECRETS = get_secrets_from_aws(AWS_SECRET_NAME)
 
-    # DYNAMO_TABLES = [
-    #     {
-    #         'TableName': 'users',
-    #         'KeySchema': [dict(AttributeName='username', KeyType='HASH')],
-    #         'AttributeDefinitions':[dict(AttributeName='username', AttributeType='S')],
-    #         'ProvisionedThroughput':dict(ReadCapacityUnits=5, WriteCapacityUnits=5)
-    #     }
-    # ]
+    DYNAMO_TABLES = [
+        USERS_TABLE_SCHEMA
+    ]
 
 
 class TestingConfig(BaseConfig):
     TESTING = True
 
+    DYNAMO_ENABLE_LOCAL = parse_config_yaml()['dynamo']['enable_local']
+    DYNAMO_LOCAL_HOST = parse_config_yaml()['dynamo']['local_host']
+    DYNAMO_LOCAL_PORT = parse_config_yaml()['dynamo']['local_port']
+
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
+
+    DYNAMO_ENABLE_LOCAL = parse_config_yaml()['dynamo']['enable_local']
+    DYNAMO_LOCAL_HOST = parse_config_yaml()['dynamo']['local_host']
+    DYNAMO_LOCAL_PORT = parse_config_yaml()['dynamo']['local_port']
 
 
 class QAConfig(BaseConfig):

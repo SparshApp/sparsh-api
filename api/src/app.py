@@ -35,6 +35,14 @@ def create_app():
     # Set up extensions
     bcrypt.init_app(app)
     login_manager.init_app(app)
+
+
+    print("debugging")
+    print(app.config['DYNAMO_TABLES'])
+    print(app.config['DYNAMO_ENABLE_LOCAL'])
+    print(app.config['DYNAMO_LOCAL_HOST'])
+    print(app.config['DYNAMO_LOCAL_PORT'])
+
     dynamodb.init_app(app)
     with app.app_context():
         dynamodb.create_all()

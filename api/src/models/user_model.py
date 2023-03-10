@@ -1,4 +1,3 @@
-import uuid
 import boto3
 from botocore.exceptions import ClientError
 
@@ -8,33 +7,6 @@ dynamodb = boto3.resource('dynamodb',
                           aws_access_key_id='who',
                           aws_secret_access_key='cares')
 users_table = dynamodb.Table('users')
-USERS_TABLE_SCHEMA = {
-    'TableName': 'users',
-    'KeySchema': [
-        {
-            'AttributeName': 'email',
-            'KeyType': 'HASH'  # Partition key
-        },
-        {
-            'AttributeName': 'name',
-            'KeyType': 'RANGE'
-        }
-    ],
-    'AttributeDefinitions': [
-        {
-            'AttributeName': 'email',
-            'AttributeType': 'S'
-        },
-        {
-            'AttributeName': 'name',
-            'AttributeType': 'S'
-        }
-    ],
-    'ProvisionedThroughput': {
-        'ReadCapacityUnits': 5,
-        'WriteCapacityUnits': 5
-    }
-}
 
 
 def create_users_table():
@@ -46,18 +18,6 @@ def create_users_table():
         # TODO: add logging and raise custom exception
         print(e)
         return False
-
-
-def create_user(name, email):
-    user_id = str(uuid.uuid4())
-    user = User(user_id, name, email)
-    # TODO: Save user data to the 'users' table
-    return user
-
-
-def get_user(user_id):
-    user_data = None  # TODO: Retrieve user data from the 'users' table
-    return User.from_dict(user_data)
 
 
 class User:
