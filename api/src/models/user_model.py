@@ -1,23 +1,10 @@
+from flask import current_app
 import boto3
+from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
 
-dynamodb = boto3.resource('dynamodb',
-                          endpoint_url='http://localhost:8000',
-                          region_name='anywhere',
-                          aws_access_key_id='who',
-                          aws_secret_access_key='cares')
+dynamodb = boto3.resource('dynamodb', endpoint_url=current_app.config['DYNAMO_ENDPOINT_URL'])
 users_table = dynamodb.Table('users')
-
-
-def create_users_table():
-    try:
-        table = dynamodb.create_table(**USERS_TABLE_SCHEMA)
-        table.wait_until_exists()
-        return True
-    except ClientError as e:
-        # TODO: add logging and raise custom exception
-        print(e)
-        return False
 
 
 class User:

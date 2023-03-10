@@ -49,16 +49,16 @@ run-prod:
 
 # Push Docker images to AWS ECR
 push-dev:
-	docker tag myapp-dev:latest aws_account_id.dkr.ecr.us-west-2.amazonaws.com/myapp-dev:latest
-	docker push aws_account_id.dkr.ecr.us-west-2.amazonaws.com/myapp-dev:latest
+	docker tag sparsh-api-dev:latest aws_account_id.dkr.ecr.us-west-2.amazonaws.com/sparsh-api-dev:latest
+	docker push aws_account_id.dkr.ecr.us-west-2.amazonaws.com/sparsh-api-dev:latest
 
 push-qa:
-	docker tag myapp-qa:latest aws_account_id.dkr.ecr.us-west-2.amazonaws.com/myapp-qa:latest
-	docker push aws_account_id.dkr.ecr.us-west-2.amazonaws.com/myapp-qa:latest
+	docker tag sparsh-api-qa:latest aws_account_id.dkr.ecr.us-west-2.amazonaws.com/sparsh-api-qa:latest
+	docker push aws_account_id.dkr.ecr.us-west-2.amazonaws.com/sparsh-api-qa:latest
 
 push-prod:
-	docker tag myapp-prod:latest aws_account_id.dkr.ecr.us-west-2.amazonaws.com/myapp-prod:latest
-	docker push aws_account_id.dkr.ecr.us-west-2.amazonaws.com/myapp-prod:latest
+	docker tag sparsh-api-prod:latest aws_account_id.dkr.ecr.us-west-2.amazonaws.com/sparsh-api-prod:latest
+	docker push aws_account_id.dkr.ecr.us-west-2.amazonaws.com/sparsh-api-prod:latest
 
 # Deploy AWS infrastructure
 infra-deploy:

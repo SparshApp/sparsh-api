@@ -26,6 +26,7 @@ class BaseConfig:
     DYNAMO_TABLES = [
         USERS_TABLE_SCHEMA
     ]
+    DYNAMO_ENDPOINT_URL = parse_config_yaml()['dynamo']['endpoint_url']
 
 
 class TestingConfig(BaseConfig):

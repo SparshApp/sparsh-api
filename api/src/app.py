@@ -46,6 +46,7 @@ def create_app():
     dynamodb.init_app(app)
     with app.app_context():
         dynamodb.create_all()
+    app.app_context().push()
 
     # Register route blueprints
     from routes import users_bp, app_bp

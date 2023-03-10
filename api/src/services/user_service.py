@@ -14,8 +14,6 @@ class UserService:
         return User.get_all()
 
     def get_user(user_id):
-        # user_data = None  # TODO: Retrieve user data from the 'users' table
-        # return User.from_dict(user_data)
         return User.get_by_id(user_id)
 
     def update_user(self, user_id, name, email):
