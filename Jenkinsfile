@@ -1,62 +1,107 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.9.2-alpine3.13'
-            args '-u root'
-        }
-    }
-
+    agent any
     environment {
-        APP_NAME = 'my-app'
-        DEV_ENV = 'dev'
-        PROD_ENV = 'prod'
-        DOCKER_REPO = 'my-docker-repo'
+        APP_ENV = ''
+        AWS_REGION = 'us-west-2'
+        AWS_ACCOUNT_ID = '1234567890'
+        AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+        DOCKER_REGISTRY = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
     }
-
     stages {
+        stage('Checkout') {
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    userRemoteConfigs: [[url: 'https://github.com/SparshApp/sparsh-api.git']]
+                ])
+            }
+        }
         stage('Build') {
             steps {
-                sh 'pip install --upgrade pip'
-                sh 'pip install -r requirements.txt'
-                sh 'python -m compileall .'
-                sh 'docker build -t ${DOCKER_REPO}/${APP_NAME}:${BUILD_NUMBER} .'
+                sh 'make build'
             }
         }
-
-        stage('Lint') {
+        stage('Unit Tests') {
             steps {
-                sh 'pip install pylint'
-                sh 'find . -iname "*.py" | xargs pylint'
+                sh 'make unit-tests'
             }
         }
-
-        stage('Unit Test') {
+        stage('Static Analysis') {
             steps {
-                sh 'pip install pytest'
-                sh 'pytest -v'
+                sh 'make lint'
             }
         }
-
-        stage('Integration Test') {
-            when {
-                environment name: 'BRANCH_NAME', value: 'dev'
-            }
+        stage('Coverage') {
             steps {
-                sh 'pip install pytest'
-                sh 'pytest --env=${DEV_ENV} --integration'
+                sh 'make coverage'
             }
         }
-
-        stage('Deploy') {
-            when {
-                environment name: 'BRANCH_NAME', value: 'master'
+        stage('Deploy to Dev') {
+            environment {
+                APP_ENV = 'dev'
             }
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
+            parallel {
+                stage('Integration Tests') {
+                    steps {
+                        sh 'make integration-tests'
+                    }
                 }
-                sh 'docker push ${DOCKER_REPO}/${APP_NAME}:${BUILD_NUMBER}'
-                sh 'kubectl set image deployment/${APP_NAME} ${APP_NAME}=${DOCKER_REPO}/${APP_NAME}:${BUILD_NUMBER} --namespace=${PROD_ENV}'
+                stage('End-to-End Tests') {
+                    steps {
+                        sh 'make e2e-tests'
+                    }
+                }
+            }
+            stage('Deploy App') {
+                steps {
+                    sh 'make run-prod'
+                }
+            }
+        }
+        stage('Deploy to QA') {
+            environment {
+                APP_ENV = 'qa'
+            }
+            parallel {
+                stage('Integration Tests') {
+                    steps {
+                        sh 'make integration-tests'
+                    }
+                }
+                stage('End-to-End Tests') {
+                    steps {
+                        sh 'make e2e-tests'
+                    }
+                }
+            }
+            stage('Deploy App') {
+                steps {
+                    sh 'make run-prod'
+                }
+            }
+        }
+        stage('Deploy to Prod') {
+            environment {
+                APP_ENV = 'prod'
+            }
+            stage('Deploy App') {
+                steps {
+                    sh 'make run-prod'
+                }
+            }
+        }
+        stage('Push to ECR') {
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    credentialsId: 'aws-creds',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                ]]) {
+                    sh 'make push-to-ecr'
+                }
             }
         }
     }

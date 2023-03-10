@@ -1,3 +1,0 @@
-# Alembic
-
-`alembic init alembic`

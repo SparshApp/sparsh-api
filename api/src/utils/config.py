@@ -1,22 +1,9 @@
 import os
 import yaml
+from .secrets import Secrets
 
-env = os.environ.get('APP_ENV', 'dev')
-
-
-def load_config():
-    if env == 'prod':
-        return ProdConfig
-    elif env == 'qa':
-        return QAConfig
-    elif env == 'dev':
-        return DevConfig
-    elif env == 'test':
-        return TestConfig
-    else:
-        # TODO: add logging and raise custom exception
-        raise Exception('Invalid environment')
-
+env = os.getenv('APP_ENV', 'dev')
+secrets = Secrets()
 
 def parse_config_yaml():
     basedir = os.path.abspath(os.path.dirname(__file__))
@@ -25,28 +12,48 @@ def parse_config_yaml():
     return config[env]
 
 
-class Config:
+class BaseConfig:
     DEBUG = False
     DEVELOPMENT = True
     TESTING = False
     CSRF_ENABLED = True
-    SQLALCHEMY_DATABASE_URI = parse_config_yaml()['database']['db_uri']
-    AWS_SECRET_KEY = parse_config_yaml()['aws']['secret_key']
-    AWS_SECRET_NAME = parse_config_yaml()['aws']['secret_name']
+
+    AWS_ACCESS_KEY_ID = parse_config_yaml()['aws']['access_key_id']
+    AWS_SECRET_ACCESS_KEY = secrets.get_secrets()['AWS_SECRET_ACCESS_KEY']
     AWS_REGION = parse_config_yaml()['aws']['region']
+    
+    # AWS_SECRET_NAME = parse_config_yaml()['aws']['secret_name']
+    # AWS_SECRETS = get_secrets_from_aws(AWS_SECRET_NAME)
+
+    # DYNAMO_TABLES = [
+    #     {
+    #         'TableName': 'users',
+    #         'KeySchema': [dict(AttributeName='username', KeyType='HASH')],
+    #         'AttributeDefinitions':[dict(AttributeName='username', AttributeType='S')],
+    #         'ProvisionedThroughput':dict(ReadCapacityUnits=5, WriteCapacityUnits=5)
+    #     }
+    # ]
 
 
-class TestConfig(Config):
+class TestingConfig(BaseConfig):
     TESTING = True
 
 
-class DevConfig(Config):
+class DevelopmentConfig(BaseConfig):
     DEBUG = True
 
 
-class QAConfig(Config):
+class QAConfig(BaseConfig):
     DEBUG = True
 
 
-class ProdConfig(Config):
+class ProductionConfig(BaseConfig):
     DEVELOPMENT = False
+
+
+config_by_name = dict(
+    test=TestingConfig,
+    dev=DevelopmentConfig,
+    qa=QAConfig,
+    prod=ProductionConfig
+)

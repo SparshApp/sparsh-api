@@ -1,7 +1,10 @@
+boto3==1.24.28
+botocore==1.27.59
 Flask>=2.2
 flask_bcrypt==1.0.1
 flask_cors==3.0.10
+flask_dynamo==0.1.2
 flask_login==0.6.2
-flask_sqlalchemy==3.0.3
 python-dotenv==1.0.0
-PyYAML>=6.0
+PyYAML==6.0
+gunicorn>=20.1.0

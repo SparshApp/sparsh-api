@@ -22,4 +22,5 @@ COPY . .
 RUN terraform init
 
 # Call terraform apply
-CMD ["terraform", "apply", "-auto-approve"]
+CMD ["terraform", "plan"]
+# CMD ["terraform", "apply", "-auto-approve"]
