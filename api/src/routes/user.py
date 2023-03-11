@@ -9,6 +9,8 @@ user_service = UserService()
 @users_bp.route("", methods=["GET"])
 def get_users():
     users = user_service.get_users()
+    if not users:
+        return jsonify({"error": "No users found"}), 404
     return jsonify([user.__dict__ for user in users])
 
 
