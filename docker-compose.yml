@@ -8,18 +8,16 @@ services:
       context: ./api/src
     env_file:
       - ./api/src/.env
-    command: gunicorn -w 4 -b 0.0.0.0:5001 'app:create_app()'
+    command: gunicorn -w 4 --preload -b 0.0.0.0:5001 'app:create_app()'
     ports:
       - "5001:5001"
     depends_on:
       - db
     restart: always
-    # volumes:
-    #   - ./app:/app
+    volumes:
+      - app:/app/data
     networks:
-      sparsh-network:
-          aliases:
-              - sparsh-api
+      - sparsh-network
 
   db:
     command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
@@ -28,13 +26,13 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - "./docker/dynamodb:/home/dynamodblocal/data"
+      - ./docker/dynamodb:/home/dynamodblocal/data
     working_dir: /home/dynamodblocal
     restart: always
     networks:
       sparsh-network:
           aliases:
-              - db
+              - unit
     
   unit:
     image: unit:latest
@@ -49,8 +47,8 @@ services:
       - sparsh-api
     networks:
       sparsh-network:
-          aliases:
-              - unit
+        aliases:
+          - unit
 
   integration:
     image: integration:latest
@@ -66,8 +64,8 @@ services:
       - db
     networks:
       sparsh-network:
-          aliases:
-              - integration
+        aliases:
+          - integration
 
   e2e:
     image: e2e:latest
@@ -83,8 +81,8 @@ services:
       - db
     networks:
       sparsh-network:
-          aliases:
-              - e2e
+        aliases:
+          - e2e
 
   api-infra:
     image: api-infra:latest
@@ -94,16 +92,15 @@ services:
     environment:
       APP_ENV: prod
       COMPOSE_PROJECT_NAME: sparsh
-    # volumes:
-    #   - .:/app
-    #   - /var/run/docker.sock:/var/run/docker.sock
     networks:
       sparsh-network:
-          aliases:
-              - api-infra
+        aliases:
+          - api-infra
 
 volumes:
   app:
+  dynamodb:
 
 networks:
   sparsh-network:
+    driver: bridge

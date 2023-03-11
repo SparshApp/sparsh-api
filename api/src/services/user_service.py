@@ -13,7 +13,7 @@ class UserService:
     def get_users(self):
         return User.get_all()
 
-    def get_user(user_id):
+    def get_user(self, user_id):
         return User.get_by_id(user_id)
 
     def update_user(self, user_id, name, email):

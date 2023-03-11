@@ -19,30 +19,26 @@ class BaseConfig:
     TESTING = False
     CSRF_ENABLED = True
 
-    AWS_ACCESS_KEY_ID = parse_config_yaml()['aws']['access_key_id']
-    AWS_SECRET_ACCESS_KEY = secrets.get_secrets()['AWS_SECRET_ACCESS_KEY']
-    AWS_REGION = parse_config_yaml()['aws']['region']
+    # TODO: add default values
+    AWS_ACCESS_KEY_ID = parse_config_yaml().get('aws').get('access_key_id')
+    AWS_SECRET_ACCESS_KEY = secrets.get_secrets().get('AWS_SECRET_ACCESS_KEY')
+    AWS_REGION = parse_config_yaml().get('aws').get('region')
 
     DYNAMO_TABLES = [
         USERS_TABLE_SCHEMA
     ]
-    DYNAMO_ENDPOINT_URL = parse_config_yaml()['dynamo']['endpoint_url']
+    DYNAMO_ENDPOINT_URL = parse_config_yaml().get('dynamo').get('endpoint_url')
+    DYNAMO_ENABLE_LOCAL = parse_config_yaml().get('dynamo').get('enable_local')
+    DYNAMO_LOCAL_HOST = parse_config_yaml().get('dynamo').get('local_host')
+    DYNAMO_LOCAL_PORT = parse_config_yaml().get('dynamo').get('local_port')
 
 
 class TestingConfig(BaseConfig):
     TESTING = True
 
-    DYNAMO_ENABLE_LOCAL = parse_config_yaml()['dynamo']['enable_local']
-    DYNAMO_LOCAL_HOST = parse_config_yaml()['dynamo']['local_host']
-    DYNAMO_LOCAL_PORT = parse_config_yaml()['dynamo']['local_port']
-
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
-
-    DYNAMO_ENABLE_LOCAL = parse_config_yaml()['dynamo']['enable_local']
-    DYNAMO_LOCAL_HOST = parse_config_yaml()['dynamo']['local_host']
-    DYNAMO_LOCAL_PORT = parse_config_yaml()['dynamo']['local_port']
 
 
 class QAConfig(BaseConfig):

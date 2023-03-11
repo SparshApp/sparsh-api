@@ -3,7 +3,8 @@ import boto3
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
 
-dynamodb = boto3.resource('dynamodb', endpoint_url=current_app.config['DYNAMO_ENDPOINT_URL'])
+# TODO: Set the local / docker defaults for the dynamodb endpoint url
+dynamodb = boto3.resource('dynamodb', endpoint_url=current_app.config.get('DYNAMO_ENDPOINT_URL'))
 users_table = dynamodb.Table('users')
 
 
