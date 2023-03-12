@@ -6,6 +6,14 @@ TODOs:
 
 - Only allow requests from the API Gateway through, check for some AWS Gateway credential in the request headers. Create an auth middleware to check each of the requests
 
+- Configure Nginx?
+
+- Configure AWS infrastructure using terraform infrastructure as code, and deploy using AWS credentials stored and retrieved in Jenkins pipelines
+
+- Configure DynamoDb in AWS, switch credentials between local and AWS
+
+- Create .github folder with Issue templates and PR templates
+
 ## Setup
 
 1. `git clone git@github.com:SparshApp/sparsh-api.git`

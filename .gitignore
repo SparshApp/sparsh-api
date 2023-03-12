@@ -11,4 +11,4 @@
 
 *.tfstate.*
 
-*docker/*
+*volumes

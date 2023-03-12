@@ -13,7 +13,7 @@ services:
       - db
     restart: always
     volumes:
-      - app:/app/data
+      - ./volumes/app:/app/data
     networks:
       - sparsh-network
 
@@ -24,7 +24,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./docker/dynamodb:/home/dynamodblocal/data
+      - ./volumes/dynamodb:/home/dynamodblocal/data
     working_dir: /home/dynamodblocal
     restart: always
     networks:
@@ -82,10 +82,6 @@ services:
       sparsh-network:
         aliases:
           - api-infra
-
-volumes:
-  app:
-  dynamodb:
 
 networks:
   sparsh-network:
