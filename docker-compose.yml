@@ -15,7 +15,9 @@ services:
     volumes:
       - ./volumes/app:/app/data
     networks:
-      - sparsh-network
+      sparsh-network:
+        aliases:
+          - sparsh-api
 
   db:
     command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
@@ -29,8 +31,8 @@ services:
     restart: always
     networks:
       sparsh-network:
-          aliases:
-              - unit
+        aliases:
+          - db
     
   unit:
     image: unit:latest

@@ -1,12 +1,17 @@
 [
-    {
-        "id": "1",
-        "name": "sparsh",
-        "email": "sparsh@gmail.com"
-    },
-    {
-        "id": "2",
-        "name": "cindy",
-        "email": "cindy@gmail.com"
-    }
+  {
+    "id": "1",
+    "name": "sparsh",
+    "email": "sparsh@gmail.com"
+  },
+  {
+    "id": "2",
+    "name": "cindy",
+    "email": "cindy@gmail.com"
+  },
+  {
+    "id": "3",
+    "name": "isha",
+    "email": "isha@gmail.com"
+  }
 ]
