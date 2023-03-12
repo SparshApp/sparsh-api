@@ -1,3 +1,4 @@
 # TODO: Add a description of the project
 # TODO: Update .dockerignore to exclude secrets.json once AWS SecretsManager is configured
 # *secrets.json
+*/seed/*

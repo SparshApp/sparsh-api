@@ -17,6 +17,7 @@ $ python3 seeder.py --region-name us-west-2 --endpoint http://localhost:8000 --t
 Scan table items:
 $ aws dynamodb scan --table-name users --endpoint-url http://localhost:8000
 """
+import os
 import argparse
 import sys
 import json
@@ -48,7 +49,8 @@ class Seeder:
             not found in the DDB table.
         """
         table = self.dynamodb.Table(table_name)
-        with open((f"./{table_name}.json")) as json_file:
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        with open((f"{basedir}/{table_name}.json")) as json_file:
             seeds = json.load(json_file)
             writes = 0
             fails = 0

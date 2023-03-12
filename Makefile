@@ -41,6 +41,11 @@ run-local:
 	docker build api/src -t sparsh-api
 	docker run --rm sparsh-api
 
+seed-users-local:
+	@echo "Seeding users table in local database"
+	@echo "Make sure you have activated your virtual environment: 'source venv/bin/activate'"
+	python3 api/src/db/seed/seeder.py --table users --endpoint http://localhost:8000
+
 run-prod:
 	@echo "Running production server"
 	docker-compose down
