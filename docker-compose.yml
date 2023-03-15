@@ -2,10 +2,10 @@ version: '3'
 
 services:
   sparsh-api:
-    image: sparsh-api:latest
     container_name: sparsh-api
+    image: sparsh-api:latest
     build:
-      context: ./api/src
+      context: api/src
     command: gunicorn -w 4 --preload -b 0.0.0.0:5001 'app:create_app()'
     ports:
       - "5001:5001"
@@ -20,9 +20,9 @@ services:
           - sparsh-api
 
   db:
-    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
-    image: "amazon/dynamodb-local:latest"
     container_name: db
+    image: "amazon/dynamodb-local:latest"
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
     ports:
       - "8000:8000"
     volumes:
@@ -35,10 +35,10 @@ services:
           - db
     
   unit:
-    image: unit:latest
     container_name: unit
+    image: unit:latest
     build:
-      context: ./api/tests/unit
+      context: api/tests/unit
     command: pytest
     depends_on:
       - sparsh-api
@@ -48,10 +48,10 @@ services:
           - unit
 
   integration:
-    image: integration:latest
     container_name: integration
+    image: integration:latest
     build:
-      context: ./api/tests/integration
+      context: api/tests/integration
     command: pytest
     depends_on:
       - sparsh-api
@@ -62,10 +62,10 @@ services:
           - integration
 
   e2e:
-    image: e2e:latest
     container_name: e2e
+    image: e2e:latest
     build:
-      context: ./api/tests/e2e
+      context: api/tests/e2e
     command: pytest
     depends_on:
       - sparsh-api
@@ -76,8 +76,8 @@ services:
           - e2e
 
   api-infra:
-    image: api-infra:latest
     container_name: api-infra
+    image: api-infra:latest
     build:
       context: infra
     networks:
