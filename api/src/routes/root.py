@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify
 
-app_bp = Blueprint("app", __name__)
+root_bp = Blueprint("root", __name__)
 
 
-@app_bp.route("/", methods=["GET"])
+@root_bp.route("/", methods=["GET"])
 def get_users():
     print("Hello World")
     return jsonify({"message": "Hello World"})

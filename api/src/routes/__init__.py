@@ -1,2 +1,2 @@
-from .public import app_bp
-from .user import users_bp
+from .root import root_bp
+from .users import users_bp

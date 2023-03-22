@@ -42,9 +42,9 @@ def create_app():
     app.app_context().push()
 
     # Register route blueprints
-    from routes import users_bp, app_bp
+    from routes import users_bp, root_bp
     app.register_blueprint(users_bp)
-    app.register_blueprint(app_bp)
+    app.register_blueprint(root_bp)
 
     return app
 
